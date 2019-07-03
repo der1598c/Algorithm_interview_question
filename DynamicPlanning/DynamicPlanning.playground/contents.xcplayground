@@ -3,5 +3,6 @@
     <pages>
         <page name='FibonacciSequence'/>
         <page name='StealingGold'/>
+        <page name='ChangeCoins'/>
     </pages>
 </playground>
