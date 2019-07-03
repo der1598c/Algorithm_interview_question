@@ -75,6 +75,7 @@ else {
 if let root = solution.BuildTree(nums: [1, 2, 3, -1, 4, 5, 6, -1, -1, 7, 8], pos: 0) {
     print(solution.FindAncestor(root: root, value1: 7, value2: 8))
     /*
+     *
      graph:
            1
          /  \
@@ -83,6 +84,7 @@ if let root = solution.BuildTree(nums: [1, 2, 3, -1, 4, 5, 6, -1, -1, 7, 8], pos
      nil 4  5  6
         /\
        7  8
+     *
      */
 }
 else {
@@ -90,6 +92,18 @@ else {
 }
 if let root = solution.BuildTree(nums: [1, 2, 3, 7, 4, 5, 6, 8, 9], pos: 0) {
     print(solution.FindAncestor(root: root, value1: 8, value2: 6))
+    /*
+     *
+     graph:
+            1
+          /  \
+         2    3
+        /\    /\
+       7  4  5  6
+      /\
+     8  9
+     *
+     */
 }
 else {
     print(-1)
