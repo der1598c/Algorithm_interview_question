@@ -4,5 +4,6 @@
         <page name='CommonParentNode'/>
         <page name='LookingForChange'/>
         <page name='BinaryTreeTraversal'/>
+        <page name='BinaryTreeTraversal_Stack'/>
     </pages>
 </playground>
