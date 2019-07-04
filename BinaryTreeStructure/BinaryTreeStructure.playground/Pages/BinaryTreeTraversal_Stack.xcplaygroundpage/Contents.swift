@@ -16,8 +16,14 @@
  *
  */
 
+enum OrderType {
+    case Pre_Order
+    case In_Order
+    case Post_Order
+}
+
 class Node {
-    var value: Int
+    var value: Int!
     var left: Node?
     var right: Node?
     
@@ -27,76 +33,14 @@ class Node {
 }
 
 class Element {
-    var type: Int //0 visit; 1 output
-    var node: Node
+    var type: Int! //0 visit; 1 output
+    var node: Node!
     
     init(type:Int!, node: Node!) {
         self.type = type
         self.node = node
     }
 }
-
-//class Stack<T>{
-//    var elementes = [T]()
-//    func push(element: T){
-//        elementes.append(element)
-//    }
-//    func pop() -> T? {
-//        if isEmpty {
-//            return nil
-//        }
-//        return elementes.removeLast()
-//    }
-//    func peek() -> T? {
-//        if isEmpty{
-//            return nil
-//        }
-//        return elementes.last
-//    }
-//    var isEmpty: Bool{
-//        if elementes.count == 0{
-//            return true
-//        }
-//        return false
-//    }
-//}
-
-//class Item<T> {
-//    let itemVal : T
-//    var next : Item?
-//    var count : Int
-//    init(value : T) {
-//        self.itemVal = value
-//        self.count = 0
-//    }
-//}
-//
-//class Stack<T> {
-//    var top : Item<T>?
-//
-//    func push(_ value:T){
-//        let oldTop = top
-//        top = Item(value: value)
-//        top?.next = oldTop
-//        top?.count += 1
-//        print("Push Item to Stack : \(value) ")
-//    }
-//
-//    func pop() -> T?{
-//        print("Popped Item from Stack : ")
-//        let currentTop = top
-//        top = top?.next
-//        top?.count -= 1
-//        return currentTop?.itemVal
-//    }
-//
-//    func isEmpty() -> Bool! {
-//        if (top!.count > 0) {
-//            return false
-//        }
-//        return true
-//    }
-//}
 
 struct Stack<T> {
     private var myArray: [T] = []
@@ -141,49 +85,79 @@ class Solution {
         return node
     }
     
-    func Traversal(root: Node!) -> [Int] {
+    func Traversal(root: Node!, order: OrderType) -> [Int] {
         var result = [Int]()
         var stack = Stack<Element>()
         stack.push(Element(type: 0, node: root))
         
         while (!stack.isEmpty()) {
-            print("Stack count : \(String(describing: stack.getCount()))")
             if let curr: Element = stack.pop() {
-                print("curr type : \(String(describing: curr.type)), value : \(String(describing: curr.node.value))")
                 if (curr.type == 1) {
                     result.append(curr.node.value)
-//                    print(result)
                 }
                 else {
-                    stack.push(Element(type: 0, node: curr.node.right!))
-                        print("Push value : \(String(describing: curr.node.right!.value))")
-                    stack.push(Element(type: 0, node: curr.node.left!))
-                        print("Push value : \(String(describing: curr.node.left!.value))")
-                    stack.push(Element(type: 1, node: curr.node))
-                        print("Push value : \(String(describing: curr.node.value))")
+                    switch order {
+                        case .Pre_Order:
+                            if let rNode = curr.node.right {
+                                stack.push(Element(type: 0, node: rNode))
+                            }
+                            if let lNode = curr.node.left {
+                                stack.push(Element(type: 0, node: lNode))
+                            }
+                            stack.push(Element(type: 1, node: curr.node))
+                            break
+                        case .In_Order:
+                            if let rNode = curr.node.right {
+                                stack.push(Element(type: 0, node: rNode))
+                            }
+                            stack.push(Element(type: 1, node: curr.node))
+                            if let lNode = curr.node.left {
+                                stack.push(Element(type: 0, node: lNode))
+                            }
+                            break
+                        case .Post_Order:
+                            stack.push(Element(type: 1, node: curr.node))
+                            if let rNode = curr.node.right {
+                                stack.push(Element(type: 0, node: rNode))
+                            }
+                            if let lNode = curr.node.left {
+                                stack.push(Element(type: 0, node: lNode))
+                            }
+                            break
+                    }
                 }
             }
         }
-        
         return result
     }
 }
 
 var solution = Solution()
-//if let root = solution.BuildTree(nums: [1, 2, 3, -1, 4, 5, 6], pos: 0) {
-//    print("Pre_Order :")
-//    print(solution.Traversal(root: root))
-//}
-//else {
-//    print(-1)
-//}
+//test case 1
+if let root = solution.BuildTree(nums: [1, 2, 3, -1, 4, 5, 6], pos: 0) {
+    print(solution.Traversal(root: root, order: .Pre_Order))
+    print(solution.Traversal(root: root, order: .In_Order))
+    print(solution.Traversal(root: root, order: .Post_Order))
+}
+else {
+    print(-1)
+}
 
-if let root = solution.BuildTree(nums: [3, 5, 6], pos: 0) {
-    print(root.value)
-    print(root.left!.value)
-    print(root.left!.left!.value)
-    print(root.right!.value)
-    print("Pre_Order :\n\(solution.Traversal(root: root))")
+//test case 2
+if let root = solution.BuildTree(nums: [3, 5, 6, -1, -1, 4, 0], pos: 0) {
+    print(solution.Traversal(root: root, order: .Pre_Order))
+    print(solution.Traversal(root: root, order: .In_Order))
+    print(solution.Traversal(root: root, order: .Post_Order))
+}
+else {
+    print(-1)
+}
+
+//test case 3
+if let root = solution.BuildTree(nums: [1, 2, 3], pos: 0) {
+    print(solution.Traversal(root: root, order: .Pre_Order))
+    print(solution.Traversal(root: root, order: .In_Order))
+    print(solution.Traversal(root: root, order: .Post_Order))
 }
 else {
     print(-1)
