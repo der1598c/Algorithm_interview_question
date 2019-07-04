@@ -118,6 +118,14 @@ struct Stack<T> {
             return false
         }
         return true
+//        if (peek() != nil) {
+//            return false
+//        }
+//        return true
+    }
+    
+    func getCount() -> Int! {
+        return myArray.count
     }
 }
 
@@ -139,15 +147,20 @@ class Solution {
         stack.push(Element(type: 0, node: root))
         
         while (!stack.isEmpty()) {
+            print("Stack count : \(String(describing: stack.getCount()))")
             if let curr: Element = stack.pop() {
-                print("curr type : \(String(describing: curr.type))")
+                print("curr type : \(String(describing: curr.type)), value : \(String(describing: curr.node.value))")
                 if (curr.type == 1) {
                     result.append(curr.node.value)
+//                    print(result)
                 }
                 else {
-                    stack.push(Element(type: 0, node: curr.node.right))
-                    stack.push(Element(type: 0, node: curr.node.left))
+                    stack.push(Element(type: 0, node: curr.node.right!))
+                        print("Push value : \(String(describing: curr.node.right!.value))")
+                    stack.push(Element(type: 0, node: curr.node.left!))
+                        print("Push value : \(String(describing: curr.node.left!.value))")
                     stack.push(Element(type: 1, node: curr.node))
+                        print("Push value : \(String(describing: curr.node.value))")
                 }
             }
         }
@@ -166,6 +179,10 @@ var solution = Solution()
 //}
 
 if let root = solution.BuildTree(nums: [3, 5, 6], pos: 0) {
+    print(root.value)
+    print(root.left!.value)
+    print(root.left!.left!.value)
+    print(root.right!.value)
     print("Pre_Order :\n\(solution.Traversal(root: root))")
 }
 else {
